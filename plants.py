@@ -6,5 +6,6 @@ if user_input == "1":
     plantsdb.save_plants(plantsdb.Input_plants_data())
     print("Saved.")
 else:
+    user_input = input("Input a search word or blank for table: ")
     print("Display Plants Database\n")
-    plantsdb.show_data()
+    plantsdb.show_data(user_input)

@@ -71,13 +71,22 @@ def Input_plants_data():
     return plants_dict
 
 
-def show_data():
+def show_data(keyword=None):
     with sqlite3.connect(DB) as conn:
         cursor = conn.cursor()
 
-        cursor.execute("""
-            SELECT * FROM plants_data ORDER BY name
-        """)
+        if keyword == None:
+            cursor.execute("""
+                SELECT * FROM plants_data ORDER BY name
+            """)
+        else:
+            cursor.execute(
+                """
+                SELECT * FROM plants_data WHERE name like ?
+            """,
+                # part match
+                (f"%{keyword}%",),
+            )
         columns = [description[0] for description in cursor.description]
         rows = cursor.fetchall()
         if not rows:
@@ -105,5 +114,20 @@ def show_data():
             )
 
 
+def search_data(keyword):
+    with sqlite3.connect(DB) as conn:
+        cursor = conn.cursor()
+
+        response = cursor.execute(
+            """
+            SELECT * FROM plants_data WHERE name like ?
+        """,
+            # part match
+            (f"%{keyword}%",),
+        )
+        result = response.fetchone()
+    print(result)
+
+
 if __name__ == "__main__":
-    show_data()
+    show_data("tomato")
