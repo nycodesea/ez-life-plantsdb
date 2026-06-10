@@ -22,8 +22,27 @@ def init_db():
         """)
 
 
-def save_plants(plants_dict):
+# favorite table
+def init_fav_db():
     with sqlite3.connect(DB) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS plants_fav_data(
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL UNIQUE,
+                scientific_name TEXT,
+                temp_max REAL,
+                temp_min REAL,
+                grow_pattern TEXT,
+                water_amount REAL,
+                fertilizer TEXT,
+                plant TEXT,
+                harvest TEXT
+            )
+        """)
+
+
+def save_plants(plants_dict, table="plants_data", database=DB):
+    with sqlite3.connect(database) as conn:
         columns = ", ".join(plants_dict.keys())
 
         placeholders = ", ".join(f":{k}" for k in plants_dict.keys())
@@ -33,7 +52,7 @@ def save_plants(plants_dict):
         )
 
         query = f"""
-        INSERT INTO plants_data ({columns})
+        INSERT INTO {table} ({columns})
         VALUES ({placeholders})
         ON CONFLICT(name)
         DO UPDATE SET {updates}
@@ -84,18 +103,18 @@ def Input_plants_data():
     return plants_dict
 
 
-def show_data(keyword=None):
-    with sqlite3.connect(DB) as conn:
+def show_data(keyword=None, table="plants_data", database=DB):
+    with sqlite3.connect(database) as conn:
         cursor = conn.cursor()
 
         if keyword == None:
-            cursor.execute("""
-                SELECT * FROM plants_data ORDER BY name
+            cursor.execute(f"""
+                SELECT * FROM {table} ORDER BY name
             """)
         else:
             cursor.execute(
-                """
-                SELECT * FROM plants_data WHERE name like ?
+                f"""
+                SELECT * FROM {table} WHERE name like ?
             """,
                 # part match
                 (f"%{keyword}%",),
@@ -127,13 +146,13 @@ def show_data(keyword=None):
             )
 
 
-def search_data(keyword):
-    with sqlite3.connect(DB) as conn:
+def search_data(keyword, table="plants_data", database=DB):
+    with sqlite3.connect(database) as conn:
         cursor = conn.cursor()
 
         response = cursor.execute(
-            """
-            SELECT * FROM plants_data WHERE name like ?
+            f"""
+            SELECT * FROM {table} WHERE name like ?
         """,
             # part match
             (f"%{keyword}%",),
@@ -142,16 +161,29 @@ def search_data(keyword):
     print(result)
 
 
-def delete_data(item_name):
-    with sqlite3.connect(DB) as conn:
+def delete_data(item_name, table="plants_data", database=DB):
+    with sqlite3.connect(database) as conn:
         conn.execute(
-            """
-            DELETE FROM plants_data
+            f"""
+            DELETE FROM {table}
             WHERE name = ?
             """,
             (item_name,),
         )
     print("Deleted data successfully")
+
+
+def add_favorite(name):
+    with sqlite3.connect(DB) as conn:
+        conn.execute(
+            """
+            INSERT INTO plants_fav_data
+            SELECT *
+            FROM plants_data
+            WHERE name = ?
+            """,
+            (name,),
+        )
 
 
 if __name__ == "__main__":
