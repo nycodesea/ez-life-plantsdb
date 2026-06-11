@@ -1,5 +1,6 @@
 import plantsdb
 from plantsdb import DB
+import graph
 
 TABLE = "plants_data"
 FAVTABLE = "plants_fav_data"
@@ -9,13 +10,15 @@ plantsdb.init_fav_db()
 user_input = input(
     "0 : showing data\n1 : Input data\n2 : Delete data by name\n3 : Add to Favorite by name\n4 : Show Favorites\n"
 )
-if user_input == "1":
-    plantsdb.save_plants(plantsdb.Input_plants_data(), TABLE, DB)
-    print("Saved.")
-elif user_input == "0":
+if user_input == "0":
     user_input = input("Input a search word or blank for table: ")
     print("Display Plants Database\n")
     plantsdb.show_data(user_input, TABLE, DB)
+    rows = plantsdb.get_temp_rows(user_input, TABLE, DB)
+    graph.show_temp_range(rows)
+elif user_input == "1":
+    plantsdb.save_plants(plantsdb.Input_plants_data(), TABLE, DB)
+    print("Saved.")
 elif user_input == "2":
     user_input = input("Input an item name to dlete: ")
     user_choose = input('Choose a table "Plants" or "Favorite"')

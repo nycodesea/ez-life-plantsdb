@@ -186,6 +186,33 @@ def add_favorite(name):
         )
 
 
+def get_temp_rows(keyword=None, table="plants_data", database=DB):
+    with sqlite3.connect(database) as conn:
+        cursor = conn.cursor()
+
+        if keyword is None:
+            cursor.execute(f"""
+                SELECT name, temp_min, temp_max
+                FROM {table}
+                ORDER BY name
+            """)
+        else:
+            cursor.execute(
+                f"""
+                SELECT name, temp_min, temp_max
+                FROM {table}
+                WHERE name LIKE ?
+                ORDER BY name
+                """,
+                (f"%{keyword}%",),
+            )
+
+        rows = cursor.fetchall()
+        print(rows)
+        return rows
+
+
 if __name__ == "__main__":
     init_db()
     show_data()
+    get_temp_rows()
