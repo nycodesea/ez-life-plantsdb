@@ -22,9 +22,17 @@ app.layout = html.Div(
         ),
         html.Br(),
         html.Br(),
-        dash_table.DataTable(
-            id="plants-table",
-            page_size=20,
+        html.Div(
+            [
+                dash_table.DataTable(
+                    id="plants-table",
+                    page_size=20,
+                ),
+            ],
+            style={
+                "overflowX": "auto",
+                "maxWidth": "100%",
+            },
         ),
         dcc.Graph(id="temp-graph"),
         dcc.Graph(id="gantt-graph"),
