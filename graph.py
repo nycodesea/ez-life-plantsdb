@@ -58,7 +58,7 @@ def create_temp_range(rows):
         opacity=0.9,
     )
     fig.update_layout(
-        title="適温範囲",
+        title="Temperature Range",
         xaxis_title="Temperature (°C)",
         height=max(200, len(names) * 50),
         bargap=0.5,
@@ -77,9 +77,9 @@ def create_gantt_chart(rows):
     fig = go.Figure()
 
     events = [
-        ("種まき", sow_start, sow_end),
-        ("肥料", fertilizer, fertilizer),
-        ("収穫", harvest_start, harvest_end),
+        ("Sowing", sow_start, sow_end),
+        ("Fertilizing", fertilizer, fertilizer),
+        ("Harvest", harvest_start, harvest_end),
     ]
 
     for event, start, end in events:
@@ -100,12 +100,12 @@ def create_gantt_chart(rows):
     fig.update_xaxes(
         tickmode="array",
         tickvals=list(range(1, 13)),
-        ticktext=[f"{i}月" for i in range(1, 13)],
+        ticktext=[f"{i}" for i in range(1, 13)],
         range=[0.5, 12.5],
     )
 
     fig.update_layout(
-        title=f"{name} 栽培カレンダー",
+        title=f"{name} Growing Calendar",
         height=max(200, len(event) * 50),
         showlegend=False,
         margin=dict(l=40, r=40, t=30, b=40),
