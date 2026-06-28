@@ -233,16 +233,23 @@ server = app.server
 def api_watering():
     data = request.get_json()
 
-    add_watering_log(
-        data["plant_id"],
-        data["watering_time"],
-        data["watering_duration"],
-        data["moisture_before"],
-        data["moisture_after"],
-    )
+    if not data:
+        return {"error": "no json"}, 400
+
+    try:
+        add_watering_log(
+            data["plant_id"],
+            data["watering_time"],
+            data["watering_duration"],
+            data["moisture_before"],
+            data["moisture_after"],
+        )
+    except Exception as e:
+        print("ERROR:", e)
+        return {"status": "error", "msg": str(e)}, 500
 
     return {"status": "ok"}
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8049)
+    app.run(host="0.0.0.0", debug=True, port=8049)
