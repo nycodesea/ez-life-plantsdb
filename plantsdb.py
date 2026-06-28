@@ -22,6 +22,18 @@ def init_db():
                 harvest_end INTEGER DEFAULT None
             )
         """)
+    with sqlite3.connect(DB) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS watering_logs(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                plant_id INTEGER NOT NULL,
+                watering_time TEXT NOT NULL,
+                watering_duration INTEGER,
+                moisture_before INTEGER,
+                moisture_after INTEGER,
+                FOREIGN KEY (plant_id) REFERENCES plants(id)   
+                )
+        """)
 
 
 # favorite table
@@ -147,6 +159,7 @@ def search_data(keyword, table="plants_data", database=DB):
             (f"%{keyword}%",),
         )
 
+
 def delete_data(item_name, table="plants_data", database=DB):
     with sqlite3.connect(database) as conn:
         conn.execute(
@@ -214,6 +227,27 @@ def get_gantt_data(keyword, table="plants_data", database=DB):
 
         rows = cursor.fetchall()
         return rows
+
+
+def add_watering_log(
+    plant_id, watering_time, watering_duration, moisture_before, moisture_after
+):
+    with sqlite3.connect(DB) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO watering_logs (plant_id, watering_time, watering_duration, moisture_before, moisture_after)
+            VALUES (?,?,?,?,?)
+        """,
+            (
+                plant_id,
+                watering_time,
+                watering_duration,
+                moisture_before,
+                moisture_after,
+            ),
+        )
+        conn.commit()
 
 
 if __name__ == "__main__":
