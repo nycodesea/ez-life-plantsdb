@@ -43,7 +43,7 @@ You can:
 
 - Integrate with other EZ applications
 - Use EZPlants as a central plant database
-~~- Connect with [EZ WaterFlow](https://github.com/nycodesea/ez-life-waterflow) for automatic watering~~
+- ~~Connect with [EZ WaterFlow](https://github.com/nycodesea/ez-life-waterflow) for automatic watering~~
 
 ## License
 
