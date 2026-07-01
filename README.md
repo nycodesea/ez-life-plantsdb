@@ -10,6 +10,7 @@ It allows you to manage plant information and visualize growing conditions with 
 - Search plants by name
 - Display comfortable temperature ranges
 - Display growing schedules with a Gantt chart
+- Display watering logs from [Waterflow](https://github.com/nycodesea/ez-life-waterflow)
 - SQLite database
 
 ## Screenshots
@@ -42,7 +43,7 @@ You can:
 
 - Integrate with other EZ applications
 - Use EZPlants as a central plant database
-- Connect with EZ WaterFlow (currently private) for automatic watering
+~~- Connect with [EZ WaterFlow](https://github.com/nycodesea/ez-life-waterflow) for automatic watering~~
 
 ## License
 
