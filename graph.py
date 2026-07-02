@@ -121,17 +121,27 @@ def create_watering_graph():
         get_chart_data()
     )
     fig = go.Figure()
+    for plant_id in set(plant_ids):
+        x = []
+        y = []
 
-    fig.add_trace(
-        go.Bar(
-            x=watering_times,
-            y=watering_durations,
-            name="Watering Duration",
+        for i in range(len(plant_ids)):
+            if plant_ids[i] == plant_id:
+                x.append(watering_times[i])
+                y.append(watering_durations[i])
+
+        fig.add_trace(
+            go.Bar(
+                x=x,
+                y=y,
+                name=f"Plant ID {plant_id}",
+            )
         )
-    )
+
     fig.update_layout(
         title="Watering Logs",
         xaxis_title="Date and Time",
         yaxis_title="Duration (milliseconds)",
+        barmode="group",  # "stack" にすると積み上げ表示
     )
     return fig

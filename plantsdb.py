@@ -304,9 +304,9 @@ if __name__ == "__main__":
     init_db()
     get_chart_data()
     # add_watering_log(
-    #     plant_id=1,
+    #     plant_id=4,
     #     watering_time="2026-7-01 08:00:00",
-    #     watering_duration=30,
+    #     watering_duration=1500,
     #     moisture_before=3000,
     #     moisture_after=2000,
     # )
